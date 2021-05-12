@@ -248,3 +248,9 @@ If you find this work useful for your research, please cite our paper:
   year={2020}
 }
 ```
+
+## Patch notes
+### 20210512
+* The argument of "validate" and "train", "additional" is changed to an instance defined in "main.py".
+* Without this change, the queue is reset to the initial one because the passed instance disappears after a single call of "train" of "validate".
+* This change might not affect to the performance.
