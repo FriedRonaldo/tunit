@@ -253,4 +253,5 @@ If you find this work useful for your research, please cite our paper:
 ### 20210512
 * The argument of "validate" and "train", "additional" is changed to an instance defined in "main.py".
 * Without this change, the queue is reset to the initial one because the passed instance disappears after a single call of "train" of "validate".
+    * This bug might cause the peak of "moco_loss" and "g_sty_loss" for each 1K step.
 * This change might not affect to the performance.
