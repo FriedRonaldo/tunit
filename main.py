@@ -266,9 +266,11 @@ def main_worker(gpu, ngpus_per_node, args):
     # print all the argument
     print_args(args)
 
+    additional = {'logger': logger, 'queue': queue}
+    
     # All the test is done in the training - do not need to call
     if args.validation:
-        validationFunc(val_loader, networks, 999, args, {'logger': logger, 'queue': queue})
+        validationFunc(val_loader, networks, 999, args, additional)
         return
 
     # For saving the model
@@ -279,7 +281,7 @@ def main_worker(gpu, ngpus_per_node, args):
         record_txt.close()
 
     # Run
-    validationFunc(val_loader, networks, 0, args, {'logger': logger, 'queue': queue})
+    validationFunc(val_loader, networks, 0, args, additional)
 
     fid_best_ema = 999.0
 
@@ -302,9 +304,9 @@ def main_worker(gpu, ngpus_per_node, args):
             else:
                 networks['G_EMA'].load_state_dict(networks['G'].state_dict())
 
-        trainFunc(train_loader, networks, opts, epoch, args, {'logger': logger, 'queue': queue})
+        trainFunc(train_loader, networks, opts, epoch, args, additional)
 
-        validationFunc(val_loader, networks, epoch, args, {'logger': logger, 'queue': queue})
+        validationFunc(val_loader, networks, epoch, args, additional)
 
         # Calc fid
         if epoch >= args.fid_start and args.dataset not in ['ffhq', 'lsun_car', 'afhq_cat', 'afhq_dog', 'afhq_wild']:
